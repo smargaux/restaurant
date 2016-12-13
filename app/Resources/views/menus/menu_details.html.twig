@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Détail du menu !{% endblock %}
+
+
+{% block body %}
+<a href="{{ path('menus_list')}}"> Retour à la liste</a>
+    <h1>Détails du menu
+    </h1>
+        <ul>
+            <li>
+                Nom :
+                {{ menu.name }}
+            </li>
+            <li>
+                Description :
+                {{ menu.description }}
+            </li>
+            <li>
+                Ingredients :
+                {{ menu.ingredients }}
+
+            </li>
+        </ul>
+{% endblock %}

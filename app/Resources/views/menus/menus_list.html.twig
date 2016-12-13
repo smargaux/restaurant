@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des menus!{% endblock %}
+
+{% block body %}
+
+        <h1>Liste des menus</h1>
+        {% for unMenu in menus %}
+            <ul>
+                <li>
+                    Nom :
+                    <a href="{{ path('menu_show', {'id': unMenu.id}) }}">
+                        {{ unMenu.name }}</a>
+                </li>
+
+            </ul>
+
+        {% endfor %}
+{% endblock %}
