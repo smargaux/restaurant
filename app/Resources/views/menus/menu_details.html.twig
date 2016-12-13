@@ -1,25 +1,43 @@
 {% extends 'base.html.twig' %}
 
-    {% block title %}Détail du menu !{% endblock %}
-
+{% block title %}Détail du menu !{% endblock %}
 
 {% block body %}
-<a href="{{ path('menus_list')}}"> Retour à la liste</a>
-    <h1>Détails du menu
-    </h1>
-        <ul>
-            <li>
-                Nom :
-                {{ menu.name }}
-            </li>
-            <li>
-                Description :
-                {{ menu.description }}
-            </li>
-            <li>
-                Ingredients :
-                {{ menu.ingredients }}
+    <div class="row row-centered">
+        <div class="col-md-12  col-centered menu-single-block align-center">
 
-            </li>
-        </ul>
+            <h1>
+                {{ menu.name }}
+            </h1>
+
+            <h2>Description
+            </h2>
+            <p>
+                {{ menu.description }}
+            </p>
+
+            <h2>Ingredients
+            </h2>
+            <p>
+                {{ menu.ingredients }}
+            </p>
+
+            <a href="{{ path("menu_edit", {'id': menu.id}) }}">
+                <button>Modifier</button>
+            </a>
+
+            {% if menu.imageName is not null %}
+                {{ menu.imageName}}
+                <div class="col-md-6">
+                  <img class="img-responsive" src="{{ vich_uploader_asset(menu,'imageFile') }}"  />
+
+                </div>
+            {% else %}
+            <p>
+               Il n'y a pas d'image associée à ce menu
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}

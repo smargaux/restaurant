@@ -1,0 +1,26 @@
+.menu-list-block{
+border-right: 1px solid black;
+}
+.menu-list-block h2{
+  text-align: center;
+}
+.menu-single-block h1{
+text-align: center;
+}
+.menus-list h1{
+  text-align: center;
+}
+
+
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+  }

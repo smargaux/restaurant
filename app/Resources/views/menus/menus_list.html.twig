@@ -3,17 +3,29 @@
 {% block title %}Liste des menus!{% endblock %}
 
 {% block body %}
+<a href="{{ path('menu_new')}}">
+    <button>Ajouter un menu</button></a>
+    <div class="menus-list">
 
-        <h1>Liste des menus</h1>
-        {% for unMenu in menus %}
-            <ul>
-                <li>
-                    Nom :
-                    <a href="{{ path('menu_show', {'id': unMenu.id}) }}">
-                        {{ unMenu.name }}</a>
-                </li>
+        <h1>Nos menus</h1>
+        <div class="row row-centered ">
 
-            </ul>
+            {% for unMenu in menus %}
+                <div class="col-md-4 col-centered  menu-list-block">
 
-        {% endfor %}
+                    <h2>
+                        <a href="{{ path('menu_show', {'id': unMenu.id}) }}">
+                            {{ unMenu.name }}</a>
+                    </h2>
+                    <p>
+                        {{ unMenu.description}}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
 {% endblock %}
