@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MenuRepository")
  * @ORM\Table(name="menu")
@@ -17,13 +17,21 @@ class Menu
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\OneToMany(targetEntity="MenuLike", mappedBy="menu_like")
      */
     private $id;
 
     /**
-       * @ORM\Column(type="string", length=100)
-       */
-  private $name;
+     * @ORM\Column(type="string", length=200)
+      *
+      * @Assert\NotNull(
+      * message=" Veuillez renseigner un nom pour votre menu")
+      * @Assert\Length(
+      *      max = 200,
+      *      maxMessage = "Le nom de votre menu doit faire maximum {{ limit }} characters"
+      * )
+      */
+       private $name;
 
   /**
      * @ORM\Column(type="text")
@@ -32,7 +40,13 @@ class Menu
 
   /**
      * @ORM\Column(type="string", length=100)
+     *
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = " Maximum {{ limit }} caractères"
+     * )
      */
+
   private $ingredients;
 
   /**
@@ -52,7 +66,7 @@ class Menu
    private $imageName;
 
    /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      *
      * @var \DateTime
      */
@@ -185,8 +199,8 @@ class Menu
             $this->imageFile = $image;
 
             //Si l'image est modifiée, on modifie le champs UpdatedAt
-            if ($image instanceof UploadedFile) {
-                $this->updatedAt = new \DateTime('now');
+            if ($image) {
+                $this->updatedAt=new \DateTime('now');
             }
             return $this;
         }
@@ -218,4 +232,29 @@ class Menu
         {
             return $this->imageName;
         }
+
+    /**
+     * Get the value of Updated At
+     *
+     * @return \DateTime|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of Updated At
+     *
+     * @param \DateTime updatedAt
+     *
+     * @return self
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }

@@ -25,6 +25,9 @@
             <a href="{{ path("menu_edit", {'id': menu.id}) }}">
                 <button>Modifier</button>
             </a>
+            <a href="{{ path("menu_delete", {'id': menu.id}) }}">
+                <button>Supprimer</button>
+            </a>
 
             {% if menu.imageName is not null %}
                 {{ menu.imageName}}

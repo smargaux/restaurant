@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Menu;
 use AppBundle\Form\MenuType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -30,7 +31,7 @@ class DefaultController extends Controller
         $menus= $this->getDoctrine()->getRepository('AppBundle:Menu')->findAll();
         ;
 
-        return $this->render('menus/menus_list.html.twig', array("menus"=>$menus));
+        return $this->render('menus/menus_list.html.twig', array("menus"=>$menus);
     }
 
     /**
@@ -78,7 +79,7 @@ class DefaultController extends Controller
         }
 
         return $this->render('menus/new.html.twig', array(
-        'form' => $form->createView(),
+        'form' => $form->createView(),"errors"=>null
       ));
     }
 
@@ -87,11 +88,17 @@ class DefaultController extends Controller
      */
     public function editMenuAction(Request $request, $id)
     {
-        $em= $this->getDoctrine()->getEntityManager();
+        $em= $this->getDoctrine()->getManager();
         $menu = $em->getRepository('AppBundle:Menu')->find($id);
         $form = $this->createForm(MenuType::class, $menu);
         $form->setData($menu);
+        $formView=$form;
         $form->handleRequest($request);
+        $validator = $this->get('validator');
+        $errors = $validator->validate($menu);
+
+
+
         if ($form->isSubmitted() && $form->isValid()) {
           $menu = $form->getData();
           $em = $this->getDoctrine()->getManager();
@@ -99,11 +106,32 @@ class DefaultController extends Controller
           $em->persist($menu);
           //envoie les requêtes à la base de données flush($entite) verifie si l'entité que l'on souhaite est modifiée
           $em->flush($menu);
-
-              return $this->redirectToRoute('menu_show', array('id'=>$id));
+            if (count($errors) > 0) {
+                // On enregistre les erreurs et on retourne la page du formulaire avec les erreurs rencontrées
+           $errorsString = (string) $errors;
+                return $this->render('menus/new.html.twig', array('form'=>$form->createView(),
+           'errors' => $errorsString,
+           ));
+            } else {
+                return $this->redirectToRoute('menu_show', array('id'=>$id));
+            }
         }
         return $this->render('menus/new.html.twig', array(
-       'form' => $form->createView(),
+       'form' => $form->createView(),'errors' =>(string) $errors
        ));
+    }
+    /**
+     * @Route("menus/{id}/delete",name="menu_delete")
+     */
+    public function deleteMenuAction(Request $request, $id)
+    {
+        $em= $this->getDoctrine()->getManager();
+        $menu = $em->getRepository('AppBundle:Menu')->find($id);
+        $menus= $em->getRepository('AppBundle:Menu')->findAll();
+        $em->remove($menu);
+        $em->flush();
+        return $this->redirectToRoute('menus_list', array("menus"=>$menus,
+
+     ));
     }
 }

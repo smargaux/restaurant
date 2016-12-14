@@ -3,6 +3,17 @@
     <div class="row row-centered">
 
         <div class="col-md-12 col-centered">
+          {% if errors is not null %}
+          <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Il y a des erreurs dans le formulaire !
+</div>
+          <ul>
+            {% for error in errors %}
+              <li>{{ error.message }}</li>
+            {% endfor %}
+          </ul>
+
+          {% endif %}
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}

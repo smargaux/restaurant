@@ -14,10 +14,15 @@ class MenuType extends AbstractType
    public function buildForm(FormBuilderInterface $builder, array $options)
    {
        $builder
-           ->add('name',TextType::class,array('required' => true))
-           ->add('description',TextAreaType::class,array('required' => true))
-           ->add('ingredients',TextAreaType::class, array('required' => true))
-           ->add('imageFile', FileType::class)           
+            // Max lenght : 200 chars
+           ->add('name',TextType::class,array('required' => false))
+           //Falcultative
+           ->add('description',TextAreaType::class,array('required' => false))
+
+           // Longueur max: 50chars
+           ->add('ingredients',TextAreaType::class, array('required' => false))
+           // Facultative
+           ->add('imageFile', FileType::class,array('required' => false))
            ->add('Enregistrer', SubmitType::class)
        ;
 
