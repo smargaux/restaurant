@@ -51,16 +51,10 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $menu = $em->getRepository('AppBundle:Menu')
                     ->findOneMenuByID($id);
-        $notes = $em->getRepository('AppBundle:MenuLike')
-                    ->findNotesById($id);
-        $nbNotes=$em->getRepository("AppBundle:MenuLike")
-                    ->countNotesById($id);
-                    var_dump($nbNotes);
-        $noteMoyenne=0;
-        foreach ($notes as $note) {
-          $noteMoyenne+=$note["rating"];
-        }
-        $noteMoyenne=round($noteMoyenne/$nbNotes,2);
+
+        $countNotes=$this->get('app.notes')->getTotalVotes($menu);
+        $noteMoyenne=$this->get('app.notes')->getMoyenne($menu,$countNotes);
+
         $menuLike = new MenuLike();
         $menuLike->setMenu($menu);
         $formLike = $this->createForm(MenuLikeType::class,$menuLike);
@@ -77,14 +71,14 @@ class DefaultController extends Controller
             $em->persist($menuLike);
             $em->flush();
 
-            return $this->render('menus/menu_details.html.twig', array('menu' => $menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$nbNotes));
+            return $this->render('menus/menu_details.html.twig', array('menu' => $menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$countNotes));
         }
         if (is_null($menu)) {
             throw $this->createNotFoundException(
               'Pas de menu trouvé '
           );
         }
-        return $this->render('menus/menu_details.html.twig', array("menu"=>$menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$nbNotes));
+        return $this->render('menus/menu_details.html.twig', array("menu"=>$menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$countNotes));
     }
 
     /**

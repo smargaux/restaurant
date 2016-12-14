@@ -15,7 +15,7 @@ class MenuLikeType extends AbstractType
    {
        $builder
             // Max lenght : 200 chars
-           ->add('rating',ChoiceType::class,array('required' => true, "label"=>"Note",'choices' => array(
+           ->add('rating',ChoiceType::class,array('required' => true, "label"=>"Note",'expanded'=>true,'choice_label'=>false,'multiple'=>false,'choices' => array(
         '0' => 0,
         '1' => 1,
         '2' => 2,

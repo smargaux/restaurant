@@ -43,7 +43,7 @@ class MenuLike
     /**
      * @var int
      *
-     *
+     * @Assert\NotBlank
      * @ORM\ManyToOne(targetEntity="Menu")
      * @ORM\JoinColumn(name="menu", referencedColumnName="id")
      */
