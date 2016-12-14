@@ -17,7 +17,6 @@ class Menu
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\OneToMany(targetEntity="MenuLike", mappedBy="menu_like")
      */
     private $id;
 
@@ -73,7 +72,7 @@ class Menu
     private $updatedAt;
 
 
-    public function __construct($name=false, $description=false, $ingredients=false, $imageFile=false, $imageName=false)
+    public function __construct($name="false", $description=false, $ingredients=false, $imageFile=false, $imageName=false)
     {
         $this->name=$name;
         $this->description=$description;

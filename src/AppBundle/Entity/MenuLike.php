@@ -3,13 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as MenuLikeAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * MenuLike
  *
  * @ORM\Table(name="menu_like")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MenuLikeRepository")
- *
+ * @UniqueEntity(
+ *     fields={"menu", "user"},
+ *     message="Vous avez déjà noté ce menu"
+ * )
   */
 class MenuLike
 {
@@ -18,23 +23,28 @@ class MenuLike
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+
 
      */
     private $id;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="rating", type="integer", nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Type(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 5)
+     * @ORM\Column(name="rating", type="integer")
      */
-    private $rating;
+    private $rating=0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="menu", type="integer")
      *
-     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="menu")
+     * @ORM\ManyToOne(targetEntity="Menu")
      * @ORM\JoinColumn(name="menu", referencedColumnName="id")
      */
 
@@ -47,6 +57,12 @@ class MenuLike
      */
     private $user;
 
+    public function __construct($rating=0, $user="", $menu=0)
+    {
+        $this->rating=$rating;
+        $this->user=$user;
+        $this->menu =$menu;
+    }
 
     /**
      * Get id
@@ -129,4 +145,19 @@ class MenuLike
     {
         return $this->user;
     }
+
+    /**
+     * Set the value of Id
+     *
+     * @param int id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
 }

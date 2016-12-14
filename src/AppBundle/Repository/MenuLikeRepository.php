@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
-
+use Doctrine\ORM\EntityManager;
 /**
  * MenuLikeRepository
  *
@@ -10,4 +10,24 @@ namespace AppBundle\Repository;
  */
 class MenuLikeRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function findNotesById($id){
+    return $this
+    ->createQueryBuilder('n')
+    ->select('n.rating')
+    ->where("n.menu= :id")
+    ->setParameter('id',$id)
+    ->getQuery()
+    ->getResult();
+  }
+
+  public function countNotesById($id){
+  return $this->createQueryBuilder('c')
+    ->select('count(c.id)')
+    ->where('c.menu = :id')
+    ->setParameter('id', $id)
+    ->getQuery()
+    ->getSingleScalarResult();
+  }
+
+  
 }

@@ -5,10 +5,22 @@
 {% block body %}
     <div class="row row-centered">
         <div class="col-md-12  col-centered menu-single-block align-center">
+            <div class="row row-centered">
+              <div class="col-md-6">
+                <h1>
+                    {{ menu.name }}
+                </h1>
+              </div>
+              <div class="col-md-6">
+                {% if noteMoyenne is not null %}
+                <h2>Note Moyenne :</h2> {{ noteMoyenne }} ({{ totalVotes}} votes)
+                {% endif %}
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+              </div>
+            </div>
 
-            <h1>
-                {{ menu.name }}
-            </h1>
 
             <h2>Description
             </h2>
@@ -21,6 +33,9 @@
             <p>
                 {{ menu.ingredients }}
             </p>
+
+
+
 
             <a href="{{ path("menu_edit", {'id': menu.id}) }}">
                 <button>Modifier</button>

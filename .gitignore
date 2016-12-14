@@ -2,6 +2,7 @@
 /build/
 /phpunit.xml
 /var/*
+.DS_Store
 !/var/cache
 /var/cache/*
 !var/cache/.gitkeep

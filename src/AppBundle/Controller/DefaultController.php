@@ -6,7 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Menu;
+use AppBundle\Entity\MenuLike;
+
 use AppBundle\Form\MenuType;
+use AppBundle\Form\MenuLikeType;
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,7 +35,7 @@ class DefaultController extends Controller
         $menus= $this->getDoctrine()->getRepository('AppBundle:Menu')->findAll();
         ;
 
-        return $this->render('menus/menus_list.html.twig', array("menus"=>$menus);
+        return $this->render('menus/menus_list.html.twig', array("menus"=>$menus));
     }
 
     /**
@@ -43,15 +47,44 @@ class DefaultController extends Controller
         //findOneBy(['name'=>$name])
         //find($id) (la clé primaire)
 
+
         $em = $this->getDoctrine()->getManager();
         $menu = $em->getRepository('AppBundle:Menu')
                     ->findOneMenuByID($id);
+        $notes = $em->getRepository('AppBundle:MenuLike')
+                    ->findNotesById($id);
+        $nbNotes=$em->getRepository("AppBundle:MenuLike")
+                    ->countNotesById($id);
+                    var_dump($nbNotes);
+        $noteMoyenne=0;
+        foreach ($notes as $note) {
+          $noteMoyenne+=$note["rating"];
+        }
+        $noteMoyenne=round($noteMoyenne/$nbNotes,2);
+        $menuLike = new MenuLike();
+        $menuLike->setMenu($menu);
+        $formLike = $this->createForm(MenuLikeType::class,$menuLike);
+        $formLike->handleRequest($request);
+
+        if ($formLike->isSubmitted() && $formLike->isValid()) {
+
+
+
+        //  $menuLike = $formLike->getData();
+        // ... perform some action, such as saving the task to the database
+        // for example, if Task is a Doctrine entity, save it!
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($menuLike);
+            $em->flush();
+
+            return $this->render('menus/menu_details.html.twig', array('menu' => $menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$nbNotes));
+        }
         if (is_null($menu)) {
             throw $this->createNotFoundException(
-              'Pas de menu trouvé avec le nom '.$name
+              'Pas de menu trouvé '
           );
         }
-        return $this->render('menus/menu_details.html.twig', array("menu"=>$menu));
+        return $this->render('menus/menu_details.html.twig', array("menu"=>$menu, "form"=>$formLike->createView(),"noteMoyenne"=>$noteMoyenne, 'totalVotes'=>$nbNotes));
     }
 
     /**
@@ -68,6 +101,7 @@ class DefaultController extends Controller
             // $form->getData() holds the submitted values
         // but, the original `$task` variable has also been updated
         $menu = $form->getData();
+
 
         // ... perform some action, such as saving the task to the database
         // for example, if Task is a Doctrine entity, save it!
@@ -109,7 +143,7 @@ class DefaultController extends Controller
             if (count($errors) > 0) {
                 // On enregistre les erreurs et on retourne la page du formulaire avec les erreurs rencontrées
            $errorsString = (string) $errors;
-                return $this->render('menus/new.html.twig', array('form'=>$form->createView(),
+           return $this->render('menus/new.html.twig', array('form'=>$form->createView(),
            'errors' => $errorsString,
            ));
             } else {
@@ -134,4 +168,6 @@ class DefaultController extends Controller
 
      ));
     }
+
+
 }
