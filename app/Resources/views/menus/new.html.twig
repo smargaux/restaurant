@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block body %}
     <div class="row row-centered">
 
@@ -7,6 +6,11 @@
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
+
+            <!--
+             * Surcharger le formulaire
+             * https://symfony.com/doc/current/form/form_customization.html
+             *-->
         </div>
     </div>
 
