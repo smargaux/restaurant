@@ -38,6 +38,12 @@
                             <a href="{{ path('menus_list')}}">
                                 Menus</a>
                         </li>
+                        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                        <li>
+                            <a href="{{ path('logout')}}">
+                                Se déconnecter</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->

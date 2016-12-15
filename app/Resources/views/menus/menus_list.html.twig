@@ -3,10 +3,12 @@
 {% block title %}Liste des menus!{% endblock %}
 
 {% block body %}
+{% if is_granted('ROLE_ADMIN') %}
 <a href="{{ path('menu_new')}}">
     <button>Ajouter un menu</button></a>
+    {% endif %}
     <div class="menus-list">
-    
+
         <h1>Nos menus</h1>
         <div class="row row-centered ">
 

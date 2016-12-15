@@ -86,6 +86,8 @@ class DefaultController extends Controller
      */
     public function newMenuAction(Request $request)
     {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Il faut être administrateur !');
+
         $menu = new Menu();
         $form = $this->createForm(MenuType::class, $menu);
         //$form->getForm();
