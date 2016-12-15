@@ -4,6 +4,15 @@ parameters:
 #    parameter_name: value
 
 services:
+#    app.notes:
+#        class: AppBundle\Services\Notes
+#        arguments: [ '@doctrine.orm.entity_manager' ]
     app.notes:
         class: AppBundle\Services\Notes
-        arguments: [ '@doctrine.orm.entity_manager' ]
+        arguments: [ '@doctrine' ]
+
+    app.menu_like_extension:
+        class: AppBundle\Twig\MenuLikeExtension
+        tags:
+            - { name: twig.extension }
+        arguments: ['@app.notes']

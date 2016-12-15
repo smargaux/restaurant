@@ -25,50 +25,40 @@ text-align: center;
     margin-right:-4px;
   }
 
-#menu_like_rating .radio & > input label {
-        /* only enough room for the star */
-        display: inline-block;
-        overflow: hidden;
-        text-indent: 9999px;
-        width: 1em;
-        white-space: nowrap;
-        cursor: pointer;
-      }
-#menu_like_rating .radio  & > input label:before {
-          display: inline-block;
-          text-indent: -9999px;
-          content: '\2606';
-          color: #888;
-        }
-
-#menu_like_rating .radio  & > input:checked ~ label:before,
-        & + label:hover ~ label:before,
-        & + label:hover:before {
-        content: '\2605';
-        color: #e52;
-        text-shadow: 0 0 1px #333;
-      }
-
-
-    /* the hidden clearer */
-    & > .star-cb-clear + label {
-      text-indent: -9999px;
-      width: .5em;
-      margin-left: -.5em;
-    }
-    & > .star-cb-clear + label:before {
-      width: .5em;
+    .radio {
+      border: none;
+      float: left;
     }
 
-    &:hover > input + label:before {
-      content: '\2606';
-      color: #888;
-      text-shadow: none;
+    .radio > label input {
+      display: none;
     }
-    &:hover > input + label:hover ~ label:before,
-    &:hover > input + label:hover:before {
-      content: '\2605';
-        color: #e52;
-      text-shadow: 0 0 1px #333;
+    .radio > label:before {
+      margin: 5px;
+      font-size: 1.25em;
+      font-family: FontAwesome;
+      display: inline-block;
+      content: "\f005";
     }
-  }
+
+    .radio > .half:before {
+      content: "\f089";
+      position: absolute;
+    }
+
+    .radio > label {
+      color: #ddd;
+     float: right;
+    }
+
+.radio label input:checked > label{
+    color: black;
+}
+     /* show gold star when clicked */
+    .radio:not(:checked) > label:hover, /* hover current star */
+    .radio:not(:checked) > .radio label:hover ~ .radio label { color: #FFD700;  } /* hover previous stars in list */
+
+    .radio > label input:checked + label:hover, /* hover current star when changing rating */
+    .radio > label input:checked ~ label:hover,
+    .radio > label:hover ~ label input:checked ~ label, /* lighten current selection */
+    .radio > label input:checked ~ label:hover ~ label { color: #FFED85;  }

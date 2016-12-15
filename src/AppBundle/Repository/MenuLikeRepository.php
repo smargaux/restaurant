@@ -10,6 +10,11 @@ use Doctrine\ORM\EntityManager;
  */
 class MenuLikeRepository extends \Doctrine\ORM\EntityRepository
 {
+  /**
+   * [findNotesById Retourne toutes les notes d'un menu]
+   * @param  [int] $id [Identifiant du menu]
+   * @return [type]     [description]
+   */
   public function findNotesById($id){
     return $this
     ->createQueryBuilder('n')
@@ -20,6 +25,11 @@ class MenuLikeRepository extends \Doctrine\ORM\EntityRepository
     ->getResult();
   }
 
+/**
+ * [countNotesById Retourne le nombre de notes d'un menu]
+ * @param  int $id Identificant du menu
+ * @return int   nombre de notes
+ */
   public function countNotesById($id){
   return $this->createQueryBuilder('c')
     ->select('count(c.id)')
@@ -29,5 +39,5 @@ class MenuLikeRepository extends \Doctrine\ORM\EntityRepository
     ->getSingleScalarResult();
   }
 
-  
+
 }

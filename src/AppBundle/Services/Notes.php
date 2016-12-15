@@ -4,22 +4,34 @@ namespace AppBundle\Services;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity;
 use AppBundle\Entity\Menu;
+
 class Notes
 {
-    protected $em;
+    /*protected $em;
     public function __construct(EntityManager $em)
-  {
-    $this->em = $em;
-  }
-    public function getTotalVotes(Menu $menu)
     {
-        return $this->em->getRepository("AppBundle:MenuLike")
-                ->countNotesById($menu->getId());
+        $this->em = $em;
+    }*/
+
+    private $doctrine;
+
+    public function __construct($doctrine){
+      $this->doctrine=$doctrine;
     }
-    public function getMoyenne(Menu $menu, $totalVotes)
+  /**
+   * [getTotalVotes Retourne le nombre de notes d'un menu]
+   * @param  Menu   $menu
+   * @return int nombre de
+   */
+    public function getTotalVotes($menuid)
     {
-        $notes=$this->em->getRepository('AppBundle:MenuLike')
-                  ->findNotesById($menu->getId());
+        return $this->doctrine->getRepository("AppBundle:MenuLike")
+                ->countNotesById($menuid);
+    }
+    public function getMoyenne($menuid, $totalVotes)
+    {
+        $notes=$this->doctrine->getRepository('AppBundle:MenuLike')
+                  ->findNotesById($menuid);
         $noteMoyenne=0;
         foreach ($notes as $note) {
             $noteMoyenne+=$note["rating"];

@@ -52,8 +52,8 @@ class DefaultController extends Controller
         $menu = $em->getRepository('AppBundle:Menu')
                     ->findOneMenuByID($id);
 
-        $countNotes=$this->get('app.notes')->getTotalVotes($menu);
-        $noteMoyenne=$this->get('app.notes')->getMoyenne($menu,$countNotes);
+        $countNotes=$this->get('app.notes')->getTotalVotes($id);
+        $noteMoyenne=$this->get('app.notes')->getMoyenne($id,$countNotes);
 
         $menuLike = new MenuLike();
         $menuLike->setMenu($menu);

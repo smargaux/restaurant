@@ -14,7 +14,10 @@
               <div class="col-md-6">
                 {% if noteMoyenne is not null %}
                 <h2>Note Moyenne :</h2> {{ noteMoyenne }} ({{ totalVotes}} votes)
+                <h2>Note Moyenne :</h2> {{ getMoyenneMenuLike(menu.id,getCountMenuLike(menu.id)) }} ({{ getCountMenuLike(menu.id) }} votes)
+
                 {% endif %}
+
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
